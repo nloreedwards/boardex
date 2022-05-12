@@ -1,0 +1,20 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics\label{tab1}}
+\begin{tabular}{l*{4}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+                    &\multicolumn{1}{c}{CEO}&\multicolumn{1}{c}{COO}&\multicolumn{1}{c}{CFO}&\multicolumn{1}{c}{CTO}\\
+\midrule
+Probit              &                     &                     &                     &                     \\
+Log(Rev)            &     -0.0233\sym{***}&     0.00940         &      0.0120\sym{**} &      0.0289\sym{**} \\
+                    &     (-2.69)         &      (1.30)         &      (2.11)         &      (2.14)         \\
+\midrule
+N                   &       12722         &       12751         &       12740         &       11145         \\
+Age Control?        &           Y         &           Y         &           Y         &           Y         \\
+Sector Control?     &           Y         &           Y         &           Y         &           Y         \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize \textit{t} statistics in parentheses}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

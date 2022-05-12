@@ -195,3 +195,62 @@ tsline p_w_CEO
 
 tsline p_w_COO || tsline p_w_CTO || tsline p_w_CFO
 */
+
+
+*** Look for Characteristics associated with each position
+/*
+import delimited "$data_directory/orbis_data_ISIN.csv", varnames(1) clear
+rename isin ISIN
+drop if ISIN == ""
+*drop if Ticker == ""
+save "$data_directory/orbis_data", replace
+*/
+** ALL COMPANIES
+use "$data_directory/c_suite_data", clear
+drop if RowType == "Disclosed Earner"
+
+* Prevalence of positions
+gen year = year(AnnualReportDate)
+keep if year > 1999 & year < 2021
+duplicates drop BoardID DirectorID year, force
+
+collapse (rawsum) pos*, by(year BoardID Sector ISIN)
+
+replace Sector = subinstr(Sector, "&", "+", .)
+encode Sector, gen(sector1)
+
+local positions "CEO COO CFO CIO CTO CCO_comp CKO CDO CMO CSO_sec CSO_sus CAO CPO CCO_cont CHRO"
+
+foreach position in `positions'{
+	replace pos_`position' = 1 if pos_`position' > 0
+	label var pos_`position' "`position'"
+}
+
+sort BoardID year
+bysort BoardID : gen age = _n
+
+label var age "Age"
+
+eststo clear
+foreach pos in CEO COO CFO CTO {
+	eststo: probit pos_`pos' age i.sector1 if year == 2020, vce(robust)
+}
+esttab, label title(Percent of firms with each C-Suite position (Balanced Sample)\label{tab98}) replace
+esttab using "$export_directory/tables/probit_reg1.tex", label title(Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics\label{tab1}) star(* 0.10 ** 0.05 *** 0.01) eqlabels("Probit") replace booktabs longtable nogaps not compress
+
+merge m:1 BoardID using "$data_directory/company_size_data"
+drop if _merge == 2
+drop _merge
+
+gen ln_Revenue = ln(Revenue)
+
+label var ln_Revenue "Log(Rev)"
+
+eststo clear
+foreach pos in CEO COO CFO CTO {
+	eststo: probit pos_`pos' ln_Revenue age i.sector1 if year == 2020, vce(robust)
+	estadd local age_control "Y"
+	estadd local sector_control "Y"
+}
+esttab, label title(Percent of firms with each C-Suite position (Balanced Sample)\label{tab98}) replace
+esttab using "$export_directory/tables/probit_reg2.tex", label keep(ln_Revenue) s(N age_control sector_control, label("N" "Age Control?" "Sector Control?")) title(Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics\label{tab1}) star(* 0.10 ** 0.05 *** 0.01) eqlabels("Probit") replace booktabs

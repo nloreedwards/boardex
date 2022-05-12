@@ -54,3 +54,20 @@ egen has_pos = rowmax(pos_CEO pos_COO pos_CFO pos_CIO pos_CTO pos_CCO_comp pos_C
 drop if has_pos == 0
 
 save "$data_directory/c_suite_data", replace
+
+
+*** Company Data
+use "$data_directory/xtfqclfn2hthmbqm", clear
+
+append using "$data_directory/dlta74rxpdkvc48g"
+append using "$data_directory/diohiyjazdzgto8g"
+append using "$data_directory/udf8nl05lbkqtf6e"
+
+keep BoardID RevenueValueDate MktCapitalisation NoEmployees Revenue Currency
+drop if missing(RevenueValueDate) & missing(MktCapitalisation) & missing(NoEmployees) & missing(Revenue) & missing(Currency)
+
+duplicates drop
+
+sort BoardID
+
+save "$data_directory/company_size_data", replace
