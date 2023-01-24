@@ -8,14 +8,26 @@ cd "$working_directory"
 *** Tabulate Different C-Suit Positions over time
 ** ALL COMPANIES
 use "$data_directory/c_suite_data", clear
-drop if RowType == "Disclosed Earner"
+*drop if RowType == "Disclosed Earner"
 
 * Prevalence of positions
 gen year = year(AnnualReportDate)
 keep if year > 1999 & year < 2021
 duplicates drop BoardID DirectorID year, force
 
-collapse (rawsum) pos*, by(year BoardID)
+*drop if Ticker == ""
+
+collapse (rawsum) pos*, by(year BoardID BoardName ISIN)
+
+*gen num_positions = pos_CEO+pos_COO+pos_CFO+pos_CIO+pos_CTO+pos_CCO_comp+pos_CKO+pos_CDO+pos_CMO+pos_CSO_sec+pos_CSO_sus+pos_CAO+pos_CPO+pos_CCO_cont+pos_CHRO
+
+*drop if num_positions < 2
+
+*merge m:1 BoardID using "$data_directory/company_size_data"
+*drop if _merge == 2
+*drop _merge
+
+*drop if NoEmployees < 1000
 
 gen count = 1
 
@@ -67,7 +79,7 @@ esttab using "$export_directory/tables/change_positions.tex", not noobs nostar n
 
 * Average number of positions
 use "$data_directory/c_suite_data", clear
-drop if RowType == "Disclosed Earner"
+*drop if RowType == "Disclosed Earner"
 
 * Prevalence of positions
 gen year = year(AnnualReportDate)
@@ -93,7 +105,7 @@ graph export "$export_directory/figs/num_positions_over_time.png", replace
 
 ** BALANCED SET
 use "$data_directory/c_suite_data", clear
-drop if RowType == "Disclosed Earner"
+*drop if RowType == "Disclosed Earner"
 
 * Prevalence of positions
 gen year = year(AnnualReportDate)
@@ -154,7 +166,7 @@ esttab using "$export_directory/tables/change_positions_bal.tex", not noobs nost
 
 * Average number of positions
 use "$data_directory/c_suite_data", clear
-drop if RowType == "Disclosed Earner"
+*drop if RowType == "Disclosed Earner"
 
 * Prevalence of positions
 gen year = year(AnnualReportDate)
@@ -207,14 +219,14 @@ save "$data_directory/orbis_data", replace
 */
 ** ALL COMPANIES
 use "$data_directory/c_suite_data", clear
-drop if RowType == "Disclosed Earner"
+*drop if RowType == "Disclosed Earner"
 
 * Prevalence of positions
 gen year = year(AnnualReportDate)
-keep if year > 1999 & year < 2021
+*keep if year > 1999 & year < 2021
 duplicates drop BoardID DirectorID year, force
 
-collapse (rawsum) pos*, by(year BoardID Sector ISIN)
+collapse (rawsum) pos*, by(year BoardID Sector)
 
 replace Sector = subinstr(Sector, "&", "+", .)
 encode Sector, gen(sector1)
@@ -254,3 +266,55 @@ foreach pos in CEO COO CFO CTO {
 }
 esttab, label title(Percent of firms with each C-Suite position (Balanced Sample)\label{tab98}) replace
 esttab using "$export_directory/tables/probit_reg2.tex", label keep(ln_Revenue) s(N age_control sector_control, label("N" "Age Control?" "Sector Control?")) title(Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics\label{tab1}) star(* 0.10 ** 0.05 *** 0.01) eqlabels("Probit") replace booktabs
+
+
+** BALANCED SET
+use "$data_directory/c_suite_data", clear
+*drop if RowType == "Disclosed Earner"
+
+* Prevalence of positions
+gen year = year(AnnualReportDate)
+keep if year > 1999 & year < 2021
+duplicates drop BoardID DirectorID year, force
+
+collapse (rawsum) pos*, by(year BoardID Sector)
+
+replace Sector = subinstr(Sector, "&", "+", .)
+encode Sector, gen(sector1)
+
+local positions "CEO COO CFO CIO CTO CCO_comp CKO CDO CMO CSO_sec CSO_sus CAO CPO CCO_cont CHRO"
+
+foreach position in `positions'{
+	replace pos_`position' = 1 if pos_`position' > 0
+	label var pos_`position' "`position'"
+}
+
+sort BoardID year
+bysort BoardID : gen age = _n
+
+label var age "Age"
+
+keep if age == 21
+
+eststo clear
+foreach pos in CEO COO CFO CTO {
+	eststo: probit pos_`pos' i.sector1 if year == 2020, vce(robust)
+}
+esttab, label title(Percent of firms with each C-Suite position (Balanced Sample)\label{tab98}) replace
+esttab using "$export_directory/tables/probit_reg1_bal.tex", label title(Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics [Balanced Set]\label{tab1}) star(* 0.10 ** 0.05 *** 0.01) eqlabels("Probit") replace booktabs longtable nogaps not compress
+
+merge m:1 BoardID using "$data_directory/company_size_data"
+drop if _merge == 2
+drop _merge
+
+gen ln_Revenue = ln(Revenue)
+
+label var ln_Revenue "Log(Rev)"
+
+eststo clear
+foreach pos in CEO COO CFO CTO {
+	eststo: probit pos_`pos' ln_Revenue age i.sector1 if year == 2020, vce(robust)
+	estadd local sector_control "Y"
+}
+esttab, label title(Percent of firms with each C-Suite position (Balanced Sample)\label{tab98}) replace
+esttab using "$export_directory/tables/probit_reg2_bal.tex", label keep(ln_Revenue) s(N sector_control, label("N" "Sector Control?")) title(Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics [Balanced Set]\label{tab1}) star(* 0.10 ** 0.05 *** 0.01) eqlabels("Probit") replace booktabs

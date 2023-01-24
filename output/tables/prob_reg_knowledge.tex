@@ -1,0 +1,26 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Determinants of C-Suite Makeup\label{tab1}}
+\begin{tabular}{l*{6}{c}}
+\toprule
+                &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
+                &\multicolumn{1}{c}{Has Idiosyncratic Title}&\multicolumn{1}{c}{Has Co- Title}&\multicolumn{1}{c}{Log Num of C-Suite positions}&\multicolumn{1}{c}{Has Idiosyncratic Title}&\multicolumn{1}{c}{Has Co- Title}&\multicolumn{1}{c}{Log Num of C-Suite positions}\\
+\midrule
+Log Employees   &   0.0221\sym{***}&  0.00284\sym{***}&   0.0784\sym{***}&   0.0229\sym{***}&  0.00296\sym{***}&   0.0799\sym{***}\\
+                &(0.00166)         &(0.000826)         &(0.00200)         &(0.00167)         &(0.000836)         &(0.00197)         \\
+Knowledge Intensive (Tier I)&  -0.0502\sym{***}&  -0.0137\sym{***}&   0.0611\sym{***}&  -0.0741\sym{***}&  -0.0173\sym{***}&  0.00590         \\
+                &(0.00631)         &(0.00278)         &(0.00766)         &(0.00722)         &(0.00342)         &(0.00846)         \\
+Knowledge Intensive (Tier II)&  -0.0812\sym{***}&  -0.0110         &  -0.0741\sym{***}&  -0.0805\sym{***}&  -0.0109         &  -0.0724\sym{***}\\
+                & (0.0133)         &(0.00687)         & (0.0149)         & (0.0131)         &(0.00686)         & (0.0148)         \\
+Share With Bachelor's \\ Degree (Industry-Level)&                  &                  &                  &    0.199\sym{***}&   0.0298\sym{*}  &    0.459\sym{***}\\
+                &                  &                  &                  & (0.0276)         & (0.0155)         & (0.0325)         \\
+Constant        &    0.154\sym{***}&   0.0344\sym{***}&    1.274\sym{***}&    0.102\sym{***}&   0.0266\sym{***}&    1.154\sym{***}\\
+                &(0.00602)         &(0.00279)         &(0.00659)         &(0.00907)         &(0.00479)         & (0.0106)         \\
+\midrule
+N               &    86049         &    86049         &    86049         &    86021         &    86021         &    86021         \\
+R-sq            &   0.0210         & 0.000424         &    0.314         &   0.0209         & 0.000383         &    0.314         \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{7}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

@@ -1,0 +1,26 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Determinants of C-Suite Makeup\label{tab1}}
+\begin{tabular}{l*{6}{c}}
+\toprule
+                &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
+                &\multicolumn{1}{c}{Has Idiosyncratic Title}&\multicolumn{1}{c}{Has Co- Title}&\multicolumn{1}{c}{Log Num of C-Suite positions}&\multicolumn{1}{c}{Has Idiosyncratic Title}&\multicolumn{1}{c}{Has Co- Title}&\multicolumn{1}{c}{Log Num of C-Suite positions}\\
+\midrule
+Log Domestic R&D \\ Spending Per Worker (2009)&  0.00581         &-0.000261         &   0.0212\sym{***}&                  &                  &                  \\
+                &(0.00429)         &(0.000944)         &(0.00521)         &                  &                  &                  \\
+Share of Industry Workers \\ in STEM Occupations (2012)&                  &                  &                  &  0.00822         &  0.00196         &   0.0621         \\
+                &                  &                  &                  & (0.0447)         & (0.0160)         & (0.0584)         \\
+Share With Bachelor's \\ Degree (Industry-Level)&  -0.0200         &  -0.0188         &    0.178         &  -0.0380         &  -0.0217         &    0.187         \\
+                &  (0.180)         & (0.0374)         &  (0.223)         &  (0.175)         & (0.0364)         &  (0.218)         \\
+Constant        &   0.0698         &   0.0412\sym{***}&    1.104\sym{***}&    0.110\sym{*}  &   0.0389\sym{**} &    1.199\sym{***}\\
+                & (0.0668)         & (0.0138)         & (0.0820)         & (0.0629)         & (0.0154)         & (0.0762)         \\
+\midrule
+N               &    79593         &    79593         &    79593         &    83146         &    83146         &    83146         \\
+R-sq            &   0.0205         & 0.000450         &    0.314         &   0.0209         & 0.000429         &    0.313         \\
+3-Digit NAICS FE?&        Y         &        Y         &        Y         &        Y         &        Y         &        Y         \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses, clustered by 4-digit NAICS code. R\&D spending and STEM data from Brookings report: 'America's Advanced Industries: What They Are, Where They Are, and Why They Matter' (2015), and are at the 4-digit NAICS level. Share With Bachelor's Degree data aggregated using ACS data, at the year and 3-digit industry level. Data}\\
+\multicolumn{7}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

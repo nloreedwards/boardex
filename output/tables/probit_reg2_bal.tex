@@ -1,17 +1,16 @@
 \begin{table}[htbp]\centering
 \def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
-\caption{Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics\label{tab1}}
+\caption{Probit reg of probability of having a C-Suite position in 2020 based on firm characteristics [Balanced Set]\label{tab1}}
 \begin{tabular}{l*{4}{c}}
 \toprule
                     &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
                     &\multicolumn{1}{c}{CEO}&\multicolumn{1}{c}{COO}&\multicolumn{1}{c}{CFO}&\multicolumn{1}{c}{CTO}\\
 \midrule
 Probit              &                     &                     &                     &                     \\
-Log(Rev)            &      0.0262\sym{***}&     0.00937         &     0.00656         &      0.0179         \\
-                    &      (4.95)         &      (1.45)         &      (1.27)         &      (1.58)         \\
+Log(Rev)            &      0.0204         &      0.0271         &     -0.0401\sym{*}  &       0.323\sym{***}\\
+                    &      (0.72)         &      (0.81)         &     (-1.75)         &      (2.71)         \\
 \midrule
-N                   &       17718         &       17732         &       17724         &       16635         \\
-Age Control?        &           Y         &           Y         &           Y         &           Y         \\
+N                   &        1210         &        1112         &        1272         &         360         \\
 Sector Control?     &           Y         &           Y         &           Y         &           Y         \\
 \bottomrule
 \multicolumn{5}{l}{\footnotesize \textit{t} statistics in parentheses}\\

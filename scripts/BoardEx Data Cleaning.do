@@ -3,71 +3,62 @@ global working_directory "/export/home/dor/nloreedwards/Documents/Git_Repos/boar
 
 cd "$working_directory"
 
-use "$data_directory/kzucvmqutm4nfe5j", clear
+* Load data
+use "$data_directory/szjadkbqppod3snh", clear
 
-append using "$data_directory/uylsi7xcdclfdbou"
-append using "$data_directory/cqn6qq79htn1v8fy"
-append using "$data_directory/6ybibdesgsivoici"
-
-drop CompanyID
-
-sort BoardName DirectorName AnnualReportDate
-
-save "$data_directory/raw_data", replace
-
-mark pos_CEO if strpos(RoleName, "CEO") | strpos(RoleName, "Chief Executive Officer")
-replace pos_CEO = 1 if RoleName == "Chief Executive"
-replace pos_CEO = 0 if strpos(RoleName, "Deputy CEO")
-replace pos_CEO = 0 if strpos(RoleName, "Regional CEO")
-replace pos_CEO = 0 if strpos(RoleName, "Division CEO")
-replace pos_CEO = 0 if strpos(RoleName, "Division Co-CEO")
-
-mark pos_COO if strpos(RoleName, "COO") | strpos(RoleName, "Chief Operating Officer")
-
-mark pos_CFO if strpos(RoleName, "CFO") | strpos(RoleName, "Chief Financial Officer")
-
-mark pos_CIO if strpos(RoleName, "CIO") | strpos(RoleName, "Chief Information Officer")
-
-mark pos_CTO if strpos(RoleName, "CTO") | strpos(RoleName, "Chief Technology Officer")
-
-mark pos_CCO_comp if strpos(RoleName, "CCO") | strpos(RoleName, "Chief Compliance Officer")
-
-mark pos_CKO if strpos(RoleName, "CKO") | strpos(RoleName, "Chief Knowledge Officer")
-
-mark pos_CDO if strpos(RoleName, "CDO") | strpos(RoleName, "Chief Data Officer")
-
-mark pos_CMO if strpos(RoleName, "CMO") | strpos(RoleName, "Chief Marketing Officer")
-
-mark pos_CSO_sec if strpos(RoleName, "CSO") | strpos(RoleName, "Chief Security Officer")
-
-mark pos_CSO_sus if strpos(RoleName, "CSO") | strpos(RoleName, "Chief Sustainability Officer")
-
-mark pos_CAO if strpos(RoleName, "CAO") | strpos(RoleName, "Chief Administration Officer")
-
-mark pos_CPO if strpos(RoleName, "CPO") | strpos(RoleName, "Chief Product Officer")
-
-mark pos_CCO_cont if strpos(RoleName, "CCO") | strpos(RoleName, "Chief Content Officer")
-
-mark pos_CHRO if strpos(RoleName, "CHRO") | strpos(RoleName, "Chief Human Resources Officer")
-
-egen has_pos = rowmax(pos_CEO pos_COO pos_CFO pos_CIO pos_CTO pos_CCO_comp pos_CKO pos_CDO pos_CMO pos_CSO_sec pos_CSO_sus pos_CAO pos_CPO pos_CCO_cont pos_CHRO)
-drop if has_pos == 0
-
-save "$data_directory/c_suite_data", replace
-
-
-*** Company Data
-use "$data_directory/xtfqclfn2hthmbqm", clear
-
-append using "$data_directory/dlta74rxpdkvc48g"
-append using "$data_directory/diohiyjazdzgto8g"
-append using "$data_directory/udf8nl05lbkqtf6e"
-
-keep BoardID RevenueValueDate MktCapitalisation NoEmployees Revenue Currency
-drop if missing(RevenueValueDate) & missing(MktCapitalisation) & missing(NoEmployees) & missing(Revenue) & missing(Currency)
+append using "$data_directory/qlufvmvn2xvizniz"
+append using "$data_directory/loqpa6qftokutbrb"
+append using "$data_directory/ajpv5zbsoh7tjplg"
 
 duplicates drop
 
-sort BoardID
+gen start_year = year(DateStartRole)
+gen end_year = year(DateEndRole)
 
-save "$data_directory/company_size_data", replace
+drop if DateStartRole == .n & DateEndRole == .n
+forvalues y = 2000/2020 {
+	
+	mark year_`y' if (end_year >= `y' | end_year == .) & (start_year <= `y' | start_year == .)
+	
+}
+
+drop DirectorID DirectorName DateStartRole DateEndRole
+
+duplicates drop
+
+/*
+preserve
+	sort CompanyID CompanyName end_year
+	duplicates drop CompanyID CompanyName end_year, force
+	egen max_year = max(end_year), by(CompanyID)
+	keep if end_year == max_year
+	duplicates drop CompanyID CompanyName, force
+	duplicates drop CompanyID, force
+	keep CompanyID CompanyName
+	rename CompanyID companyid
+	save "$data_directory/company_names", replace
+restore
+*/
+drop CompanyName
+
+duplicates drop
+
+* Drop clear non-C-Suite positions
+*mark pos_Chief if  strpos(RoleName, "Chief")
+*drop if pos_Chief == 0
+*drop pos_Chief
+
+reshape long year_, i(CompanyID RoleName Seniority start_year end_year) j(year)
+
+drop if year_ == 0
+drop year_
+
+* Merge in classified names
+merge m:1 RoleName using "$data_directory/c-suite_roles_key_formerge_exp"
+drop if _merge == 2
+drop _merge
+
+egen has_pos = rowmax(pos_Chair pos_CAcc pos_CAO pos_CAE pos_CBank pos_CBrand pos_CBus pos_CComm pos_CCommunication pos_CCO_comp pos_CCO_cont pos_CCounsel pos_CCreat pos_CCredit pos_CCustom pos_CDev pos_CDigit pos_CDO pos_CDiv pos_CEO pos_CEthics pos_CFO pos_CGov pos_CHRO pos_CInnov pos_CIO pos_CInvest pos_CKO pos_CLegal pos_CMO pos_CMed pos_CMerch pos_COO pos_CPO pos_CProcure pos_CRev pos_CRisk pos_CSales pos_CSci pos_CSO_sec pos_CStaff pos_CStrat pos_CSO_sus pos_CSupp pos_CTal pos_CTax pos_CTO pos_Chief)
+drop if has_pos == 0
+
+save "$data_directory/c_suite_data2_exp", replace
