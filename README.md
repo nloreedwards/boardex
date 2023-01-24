@@ -26,3 +26,16 @@ Now that the data was cleaned and merged, we could start deriving some insights 
 To answer these questions, we use a combination of exploratory data analysis and linear models.
 
 ### Exploratory Analysis
+To get a sense of how the C-Suite has changed over time, we first aggregate the data to the company-level to look at the average number of C-Suite positions over time. A simple timeseries shows that the number of C-Suite positions in the data has increased over time.
+![num_positions_over_time](https://user-images.githubusercontent.com/87092030/214355267-55170823-d172-4286-8a53-3ff86516b4c6.png)
+
+One explanation for this increase could be that the composition of companies is changing with time, so we also check the timeseries on a balanced sample:
+![num_positions_over_time_bal](https://user-images.githubusercontent.com/87092030/214355302-537b8e6c-8007-45a9-a05c-b5e232a9dbd0.png)
+
+To understand if outliers are dirivng these changes, we look at the distributions of the number of C-Suite positions, by company, in 2000 and 2020:
+![hist_num-positions](https://user-images.githubusercontent.com/87092030/214354340-d12c750c-1b79-4d7c-9078-4254275cd222.png)
+
+From these figures, we see that the C-Suite, on average, is growing in size over time and that this growth is not driven by the composition of companies changing or the presence of outliers. Instead, the 2020 histogram appears flatter than the 2000 histogram, representing greater variation in the number of positions in the later year.
+
+Now that we know the size of the C-Suite is changing, we can evaluate which positions specifically are driving these changes. This is the benefit of having the positions classified. To get a sense of the general trends, we produce Table 1 in the attached file.
+
