@@ -27,10 +27,10 @@ To answer these questions, we use a combination of exploratory data analysis and
 
 ### Exploratory Analysis
 To get a sense of how the C-Suite has changed over time, we first aggregate the data to the company-level to look at the average number of C-Suite positions over time. A simple timeseries shows that the number of C-Suite positions in the data has increased over time.
-![num_positions_over_time](https://user-images.githubusercontent.com/87092030/214355267-55170823-d172-4286-8a53-3ff86516b4c6.png)
+![num_positions_over_time_compu](https://user-images.githubusercontent.com/87092030/214356626-f212ab49-09a1-47e4-bd94-92a848dab691.png)
 
 One explanation for this increase could be that the composition of companies is changing with time, so we also check the timeseries on a balanced sample:
-![num_positions_over_time_bal](https://user-images.githubusercontent.com/87092030/214355302-537b8e6c-8007-45a9-a05c-b5e232a9dbd0.png)
+![num_positions_over_time_compu_bal](https://user-images.githubusercontent.com/87092030/214356674-d3e92c89-b979-45f2-829b-08ce2170b74f.png)
 
 To understand if outliers are dirivng these changes, we look at the distributions of the number of C-Suite positions, by company, in 2000 and 2020:
 ![hist_num-positions](https://user-images.githubusercontent.com/87092030/214354340-d12c750c-1b79-4d7c-9078-4254275cd222.png)
