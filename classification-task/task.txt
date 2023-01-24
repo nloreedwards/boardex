@@ -1,0 +1,14 @@
+Hi [name],
+
+I’ve attached a workbook that you’ll use for the task Raffaella mentioned. In the first spreadsheet, the column “role” contains all of the unique job titles that are in our data. We’re interested in two things: 1. Whether the role is a C-Suite position and 2. Which category of C-Suite positions the role falls under. 
+
+For question 1, you’ll fill in the column “c_suite” with either a 0 or a 1 to indicate if the position is a C-Suite position. You may need to look up titles that are ambiguous. If you have any questions about what qualifies as a C-Suite position, feel free to ask for clarification.
+
+For question 2, you’ll refer to the list of C-Suite positions in tab 2 of the workbook. If a job title is similar to one of these positions, please fill in the title’s code in the column “role_classified1” (the codes come from the second spreadsheet too). For example, you may see the titles "Chief Scientific Officer", “Chief Science Officer”, and “Chief Scientist”. In each of these cases, you’d fill in “pos_CSci” in the column “role_classified1”. If the title does not resemble any of those in the second tab, you should leave the column blank. If the title resembles multiple C-Suite positions (ex. “Chief Commercial and Marketing Officer”), then please put one code in “role_classified1” and the other code in “role_classified2”.
+
+There may be cases where you’re unsure whether a position is in the C-Suite even after looking up the title. For any of these cases, please put a 1 in the column “unsure” and leave the other columns unfilled. This way, I know which cases I should check myself.
+
+I hope that is all clear, but please let me know if you have any questions! I’m also happy to go over this in a virtual meeting if that would be helpful. I did the first few observations already so you can see an example. Thank you so much for the help, I really appreciate it!
+
+Best,
+Nick
