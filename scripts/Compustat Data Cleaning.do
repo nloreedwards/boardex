@@ -51,19 +51,19 @@ drop if companyid == .
 
 duplicates drop companyid revt emp at year, force
 
-foreach var in naics sic ciq1 ciq2 ciq3 {
+foreach var in naics sic ciq1 ciq2 ciq3 gvkey {
 	egen mode_`var' = mode(`var'), by(companyid) maxmode
 	replace `var' = mode_`var'
 }
 
-collapse (mean) revt emp at, by(companyid year naics sic ciq1 ciq2 ciq3)
+collapse (mean) revt emp at, by(companyid year gvkey naics sic ciq1 ciq2 ciq3)
 
-save "$data_directory/compustat_bx_id 9-28", replace
+save "$data_directory/compustat_bx_id 5-11-23", replace
 
 use "$data_directory/c_suite_data2_exp", clear
 rename CompanyID companyid
 
-merge m:1 companyid year using "$data_directory/compustat_bx_id 9-28"
+merge m:1 companyid year using "$data_directory/compustat_bx_id 5-11-23"
 mark compustat if _merge == 3
 drop if _merge == 2
 drop _merge

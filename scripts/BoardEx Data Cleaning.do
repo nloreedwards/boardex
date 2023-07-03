@@ -26,19 +26,22 @@ drop DirectorID DirectorName DateStartRole DateEndRole
 
 duplicates drop
 
-/*
+
 preserve
+	merge m:1 RoleName using "$data_directory/c-suite_roles_key_formerge_exp"
+	egen has_pos = rowmax(pos_Chair pos_CAcc pos_CAO pos_CAE pos_CBank pos_CBrand pos_CBus pos_CComm pos_CCommunication pos_CCO_comp pos_CCO_cont pos_CCounsel pos_CCreat pos_CCredit pos_CCustom pos_CDev pos_CDigit pos_CDO pos_CDiv pos_CEO pos_CEthics pos_CFO pos_CGov pos_CHRO pos_CInnov pos_CIO pos_CInvest pos_CKO pos_CLegal pos_CMO pos_CMed pos_CMerch pos_COO pos_CPO pos_CProcure pos_CRev pos_CRisk pos_CSales pos_CSci pos_CSO_sec pos_CStaff pos_CStrat pos_CSO_sus pos_CSupp pos_CTal pos_CTax pos_CTO pos_Chief)
+	egen num_pos = sum(has_pos), by(CompanyID)
 	sort CompanyID CompanyName end_year
 	duplicates drop CompanyID CompanyName end_year, force
 	egen max_year = max(end_year), by(CompanyID)
 	keep if end_year == max_year
 	duplicates drop CompanyID CompanyName, force
 	duplicates drop CompanyID, force
-	keep CompanyID CompanyName
+	keep CompanyID CompanyName num_pos
 	rename CompanyID companyid
 	save "$data_directory/company_names", replace
 restore
-*/
+
 drop CompanyName
 
 duplicates drop

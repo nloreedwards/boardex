@@ -1,0 +1,25 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Impact of R\&D spending on board size\label{tab1}}
+\begin{tabular}{l*{3}{c}}
+\toprule
+                &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                &\multicolumn{1}{c}{Log(Num positions)}&\multicolumn{1}{c}{Annual Change}&\multicolumn{1}{c}{20-y Change}\\
+\midrule
+Log emp (z-score)&   0.0613\sym{***}&  0.00549\sym{***}&    0.134\sym{***}\\
+                &(0.00632)         &(0.00123)         & (0.0360)         \\
+z\_ln\_emp        &    0.212\sym{***}&  0.00188\sym{**} &   0.0710\sym{***}\\
+                &(0.00529)         &(0.000868)         & (0.0221)         \\
+Constant        &    1.663\sym{***}&   0.0383\sym{***}&    0.650\sym{***}\\
+                &(0.00444)         &(0.000701)         & (0.0207)         \\
+\midrule
+N               &    44483         &    40849         &      834         \\
+R-sq            &    0.404         &   0.0199         &   0.0572         \\
+2-Digit NAICS FE?&        Y         &        Y         &        Y         \\
+Year FE?        &        Y         &        Y         &        N         \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses, clustered by company. The dependent variable in Column (1) represents the log number of C-Suite positions by company/year. Column (2) measures the annual change in board size, while Column (3) measures the 20-year change. In Column (3), the dependent and independent variables are from 2020, while in the other columns they vary by year. Yearly R\&D spending and employment data from Compustat. Each column also contains 2-digit industry and yearly fixed-effects, except Column (3), which only contains industry FE.}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

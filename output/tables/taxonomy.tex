@@ -1,0 +1,36 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Number of positions on tech taxonomy regressions\label{tab1}}
+\begin{tabular}{l*{3}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                    &\multicolumn{1}{c}{Log Num of C-Suite positions}&\multicolumn{1}{c}{Has Co- Title}&\multicolumn{1}{c}{Has Idiosyncratic Title}\\
+\midrule
+ High               &      0.0909\sym{***}&      0.0100\sym{**} &      0.0844\sym{***}\\
+                    &    (0.0105)         &   (0.00449)         &    (0.0101)         \\
+\addlinespace
+ Low                &           0         &           0         &           0         \\
+                    &         (.)         &         (.)         &         (.)         \\
+\addlinespace
+ Medium-high        &     -0.0454\sym{***}&    -0.00544         &     -0.0576\sym{***}\\
+                    &    (0.0100)         &   (0.00396)         &   (0.00890)         \\
+\addlinespace
+ Medium-low         &      0.0306\sym{***}&    -0.00856\sym{*}  &     -0.0229\sym{**} \\
+                    &    (0.0116)         &   (0.00441)         &   (0.00970)         \\
+\addlinespace
+Log Employees       &      0.0905\sym{***}&     0.00366\sym{***}&      0.0263\sym{***}\\
+                    &   (0.00163)         &  (0.000682)         &   (0.00152)         \\
+\addlinespace
+Constant            &       1.244\sym{***}&      0.0261\sym{***}&       0.136\sym{***}\\
+                    &   (0.00982)         &   (0.00395)         &   (0.00899)         \\
+\midrule
+N                   &       85471         &       85471         &       85471         \\
+R-sq                &       0.376         &     0.00503         &      0.0602         \\
+Adj R-sq            &       0.376         &     0.00475         &      0.0600         \\
+F-stat              &       375.4         &       3.238         &       47.73         \\
+Year FE?            &           Y         &           Y         &           Y         \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize Robust standard errors in parentheses. The dependent variable is the log number of C-Suite positions for each firm in a given year. High, Medium-high, Medium-low, and Low correspond to the sectoral taxonomy of digital intensity as defined in Table 3 of  Calvino et. al (2018). From the paper notes: 'High' identifies sectors in the top quartile of the distribution of the values underpinning the 'global' taxonomy, 'medium-high' the second highest quartile, 'medium-low' the second lowest, and 'low' the bottom quartile. These are treated as industry-level indicators for this regression. The regression also controls for year fixed-effects and log employment.}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}
