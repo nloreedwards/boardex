@@ -1,6 +1,6 @@
-global data_directory "/export/home/dor/nloreedwards/Documents/BoardEx/data/"
-global working_directory "/export/home/dor/nloreedwards/Documents/Git_Repos/boardex"
-global export_directory "/export/home/dor/nloreedwards/Documents/Git_Repos/boardex/output"
+global data_directory "/Users/nlore-edwards/Dropbox (Harvard University)/BoardEx"
+global working_directory "/Users/nlore-edwards/Documents/Git Repos/boardex"
+global export_directory "/Users/nlore-edwards/Documents/Git Repos/boardex/output"
 
 cd "$working_directory"
 

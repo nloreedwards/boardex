@@ -1,8 +1,9 @@
-global data_directory "/export/home/dor/nloreedwards/Documents/BoardEx/data/"
-global working_directory "/export/home/dor/nloreedwards/Documents/Git_Repos/boardex"
+global data_directory "/Users/nlore-edwards/Dropbox (Harvard University)/BoardEx"
+global working_directory "/Users/nlore-edwards/Documents/Git Repos/boardex"
 
 cd "$working_directory"
 
+* Clean Compustat data from WRDS
 use "$data_directory/Compustat Global 8-30", clear
 
 append using "$data_directory/Compustat US 8-30"
@@ -14,7 +15,7 @@ rename fyear year
 
 save "$data_directory/compustat", replace
 
-
+* Clean Compustat-CRSP key from WRDS
 use "$data_directory/compustat-crsp 8-30", clear
 
 rename GVKEY gvkey
@@ -22,7 +23,7 @@ rename fyear year
 
 save "$data_directory/compustat-crsp 8-30", replace
 
-
+* Clean Compustat-BoardEx key from WRDS
 use "$data_directory/boardex_compustat_key_clean", clear
 forvalues y = 2000/2021 {
 	
@@ -33,6 +34,7 @@ reshape long year_, i(gvkey companyid1 companyid2) j(year)
 drop year_
 save "$data_directory/boardex_compustat_key_clean_year", replace
 
+* Merge Compustat data with key
 use "$data_directory/compustat-crsp 8-30", clear
 
 merge m:1 gvkey year using "$data_directory/boardex_compustat_key_clean_year"
@@ -41,6 +43,7 @@ drop if _merge == 1
 keep companyid* gvkey year datadate at emp revt naics sic
 duplicates drop
 
+* Add additional CapitalIQ key
 destring gvkey, gen(gvkey1)
 merge m:1 gvkey1 using "$data_directory/CIQ_to_GVKEY"
 drop if _merge == 2
@@ -49,6 +52,7 @@ reshape long companyid, i(gvkey year datadate at emp revt ciq1 ciq2 ciq3) j(set)
 
 drop if companyid == .
 
+* Take the modal industry and ID for each company
 duplicates drop companyid revt emp at year, force
 
 foreach var in naics sic ciq1 ciq2 ciq3 gvkey {
@@ -60,6 +64,7 @@ collapse (mean) revt emp at, by(companyid year gvkey naics sic ciq1 ciq2 ciq3)
 
 save "$data_directory/compustat_bx_id 5-11-23", replace
 
+* Merge in Compustat data to BoardEx
 use "$data_directory/c_suite_data2_exp", clear
 rename CompanyID companyid
 
@@ -70,30 +75,8 @@ drop _merge
 
 save "$data_directory/c_suite_data2_merged", replace
 
-use "$data_directory/c_suite_data2_expanded", clear
-rename CompanyID companyid
 
-merge m:1 companyid year using "$data_directory/compustat_bx_id"
-mark compustat if _merge == 3
-drop if _merge == 2
-drop _merge
-
-save "$data_directory/c_suite_data2_expanded_merged", replace
-
-
-use "$data_directory/c_suite_data", clear
-rename BoardID companyid
-gen year = year(AnnualReportDate)
-keep if year > 1999 & year < 2021
-
-merge m:1 companyid year using "$data_directory/compustat_bx_id"
-mark compustat if _merge == 3
-drop if _merge == 2
-drop _merge
-
-save "$data_directory/c_suite_data_merged", replace
-
-****
+**** Code for RR-BoardEx Merge (not ultimately used)
 use "C:\Users\nloreedwards\Dropbox (Harvard University)\RR_DB_Darwin\RR\RR_complete.dta" 
 tab position
 replace position = "CEO" if position == ""

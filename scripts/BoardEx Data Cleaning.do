@@ -1,5 +1,5 @@
-global data_directory "/export/home/dor/nloreedwards/Documents/BoardEx/data/"
-global working_directory "/export/home/dor/nloreedwards/Documents/Git_Repos/boardex"
+global data_directory "/Users/nlore-edwards/Dropbox (Harvard University)/BoardEx"
+global working_directory "/Users/nlore-edwards/Documents/Git Repos/boardex"
 
 cd "$working_directory"
 
